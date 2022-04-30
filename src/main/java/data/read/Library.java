@@ -19,25 +19,25 @@ public class Library {
 		Library l = new Library();
 		SortedMap<Integer, BookerPrize> loadData = l.loadData();
 		// l.bookerPrizeWinner();
-		l.selectOption(2019);
+		l.selectOption(2010);
 	}
 
 	private void selectOption(Integer key) {
 		System.out.format(
-				"----------------------------------------------------------------------------------------------------------------------------------%n");
+				"----------------------------------------------------------------------------------------------------------------------------------------%n");
 		System.out.format(
-				"| Author              | Book Title                                   | Publisher           | Chair           |Panel              |%n");
+				"| Author              | Book Title                                   | Publisher              | Chair            |Panel                |%n");
 		System.out.format(
-				"----------------------------------------------------------------------------------------------------------------------------------%n");
+				"----------------------------------------------------------------------------------------------------------------------------------------%n");
 
-		String leftAlignFormat = "| %-19s | %-44s | %-19s | %-15s | %-17s | %n";
+		String leftAlignFormat = "| %-19s | %-44s | %-22s | %-16s | %-19s | %n";
 		System.out.format(leftAlignFormat, bookerPrizeMap.get(key).getWinner().getAuthor().toUpperCase(),
 				bookerPrizeMap.get(key).getWinner().getTitle().toUpperCase(),
 				bookerPrizeMap.get(key).getWinner().getPublisher().toUpperCase(), "", "");
 		System.out.format(
-				"---------------------------------------------------------------------|----------------------                 |                   |%n");
+				"---------------------------------------------------------------------|------------------------                   |                     |%n");
 
-		String leftAlignFormat1 = "| %-19s |  %-43s | %-19s | %-15s | %-17s | %n";
+		String leftAlignFormat1 = "| %-19s |  %-43s | %-22s | %-16s | %-19s | %n";
 		String chairPerson = bookerPrizeMap.get(key).getChairPersion();
 		int rem = bookerPrizeMap.get(key).getShorList().size() % 2;
 		if (rem != 0) {
@@ -58,7 +58,7 @@ public class Library {
 			count.incrementAndGet();
 		});
 		System.out.format(
-				"----------------------------------------------------------------------------------------------------------------------------------%n");
+				"----------------------------------------------------------------------------------------------------------------------------------------%n");
 //		bookerPrizeMap.entrySet().stream().forEach(bookerPrize -> {
 //
 //			String leftAlignFormat = "| %-6s | %-33s | %-20s | %-22s |%n";
