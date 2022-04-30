@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Library {
 	SortedMap<Integer, BookerPrize> bookerPrizeMap = new TreeMap<>();
@@ -17,33 +18,74 @@ public class Library {
 	public static void main(String[] args) throws IOException {
 		Library l = new Library();
 		SortedMap<Integer, BookerPrize> loadData = l.loadData();
-		l.bookerPrizeWinner();
+		// l.bookerPrizeWinner();
+		l.selectOption(2019);
+	}
+
+	private void selectOption(Integer key) {
+		System.out.format(
+				"----------------------------------------------------------------------------------------------------------------------------------%n");
+		System.out.format(
+				"| Author              | Book Title                                   | Publisher           | Chair           |Panel              |%n");
+		System.out.format(
+				"----------------------------------------------------------------------------------------------------------------------------------%n");
+
+		String leftAlignFormat = "| %-19s | %-44s | %-19s | %-15s | %-17s | %n";
+		System.out.format(leftAlignFormat, bookerPrizeMap.get(key).getWinner().getAuthor().toUpperCase(),
+				bookerPrizeMap.get(key).getWinner().getTitle().toUpperCase(),
+				bookerPrizeMap.get(key).getWinner().getPublisher().toUpperCase(), "", "");
+		System.out.format(
+				"---------------------------------------------------------------------|----------------------                 |                   |%n");
+
+		String leftAlignFormat1 = "| %-19s |  %-43s | %-19s | %-15s | %-17s | %n";
+		String chairPerson = bookerPrizeMap.get(key).getChairPersion();
+		int rem = bookerPrizeMap.get(key).getShorList().size() % 2;
+		if (rem != 0) {
+
+		}
+		AtomicInteger count = new AtomicInteger(0);
+		int booksize = bookerPrizeMap.get(key).getShorList().size() / 2;
+		// int panelSize = bookerPrizeMap.get(key).getShorList().size() -
+		// bookerPrizeMap.get(key).getPanel().size();
+
+		bookerPrizeMap.get(key).getShorList().stream().forEach(book -> {
+
+			System.out.format(leftAlignFormat1, book.getAuthor(), book.getTitle(), book.getPublisher(),
+					(booksize == count.get()) ? chairPerson : "",
+					(bookerPrizeMap.get(key).getPanel().size() > count.get())
+							? bookerPrizeMap.get(key).getPanel().get(count.get())
+							: "");
+			count.incrementAndGet();
+		});
+		System.out.format(
+				"----------------------------------------------------------------------------------------------------------------------------------%n");
+//		bookerPrizeMap.entrySet().stream().forEach(bookerPrize -> {
+//
+//			String leftAlignFormat = "| %-6s | %-33s | %-20s | %-22s |%n";
+//			System.out.format(leftAlignFormat, bookerPrize.getKey(), bookerPrize.getValue().getWinner().getTitle(),
+//					bookerPrize.getValue().getWinner().getAuthor(), bookerPrize.getValue().getWinner().getPublisher());
+//
+//		});
 
 	}
 
 	public void bookerPrizeWinner() {
-		System.out.format("----------------------------------------------------------------------------------------------%n");
-		System.out.format("| Year   | Title                             | Author               | Publisher              |%n");
-		System.out.format("----------------------------------------------------------------------------------------------%n");
-		
+		System.out.format(
+				"----------------------------------------------------------------------------------------------%n");
+		System.out.format(
+				"| Year   | Title                             | Author               | Publisher              |%n");
+		System.out.format(
+				"----------------------------------------------------------------------------------------------%n");
+
 		bookerPrizeMap.entrySet().stream().forEach(bookerPrize -> {
-			
+
 			String leftAlignFormat = "| %-6s | %-33s | %-20s | %-22s |%n";
-			System.out.format(leftAlignFormat, bookerPrize.getKey(), bookerPrize.getValue().getWinner().getTitle(),bookerPrize.getValue().getWinner().getAuthor(),bookerPrize.getValue().getWinner().getPublisher());
-			
-			
-			
-			
-			
-			
-			
-//			System.out.print("|"+bookerPrize.getKey()+"|");
-//			System.out.print(bookerPrize.getValue().getWinner().getTitle()+"|");
-//			System.out.print(bookerPrize.getValue().getWinner().getAuthor()+"|");
-//			System.out.println(bookerPrize.getValue().getWinner().getPublisher()+"|");
+			System.out.format(leftAlignFormat, bookerPrize.getKey(), bookerPrize.getValue().getWinner().getTitle(),
+					bookerPrize.getValue().getWinner().getAuthor(), bookerPrize.getValue().getWinner().getPublisher());
 
 		});
-		System.out.format("----------------------------------------------------------------------------------------------%n");
+		System.out.format(
+				"----------------------------------------------------------------------------------------------%n");
 	}
 
 	public SortedMap<Integer, BookerPrize> loadData() throws IOException {
