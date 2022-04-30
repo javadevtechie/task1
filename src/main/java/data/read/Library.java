@@ -17,7 +17,33 @@ public class Library {
 	public static void main(String[] args) throws IOException {
 		Library l = new Library();
 		SortedMap<Integer, BookerPrize> loadData = l.loadData();
-		System.out.println();
+		l.bookerPrizeWinner();
+
+	}
+
+	public void bookerPrizeWinner() {
+		System.out.format("----------------------------------------------------------------------------------------------%n");
+		System.out.format("| Year   | Title                             | Author               | Publisher              |%n");
+		System.out.format("----------------------------------------------------------------------------------------------%n");
+		
+		bookerPrizeMap.entrySet().stream().forEach(bookerPrize -> {
+			
+			String leftAlignFormat = "| %-6s | %-33s | %-20s | %-22s |%n";
+			System.out.format(leftAlignFormat, bookerPrize.getKey(), bookerPrize.getValue().getWinner().getTitle(),bookerPrize.getValue().getWinner().getAuthor(),bookerPrize.getValue().getWinner().getPublisher());
+			
+			
+			
+			
+			
+			
+			
+//			System.out.print("|"+bookerPrize.getKey()+"|");
+//			System.out.print(bookerPrize.getValue().getWinner().getTitle()+"|");
+//			System.out.print(bookerPrize.getValue().getWinner().getAuthor()+"|");
+//			System.out.println(bookerPrize.getValue().getWinner().getPublisher()+"|");
+
+		});
+		System.out.format("----------------------------------------------------------------------------------------------%n");
 	}
 
 	public SortedMap<Integer, BookerPrize> loadData() throws IOException {
@@ -43,8 +69,6 @@ public class Library {
 				bookerPrizeMap.get(lastKey).setShorList(setShortListBooks);
 
 			} else if (lineNumber % 3 == 0) {
-				System.out.println("Third  Line " + lineNumber % 3 + " text : " + line);
-
 				String[] token = line.split("[,]");
 				Integer lastKey = bookerPrizeMap.lastKey();
 				List<String> panelList = new ArrayList<String>();
