@@ -18,12 +18,7 @@ import java.util.stream.Collectors;
 
 public class Library {
 	SortedMap<Integer, BookerPrize> bookerPrizeMap = new TreeMap<>();
-	 public static void printMenu(String[] options){
-	        for (String option : options){
-	            System.out.println(option);
-	        }
-	        System.out.print("Choose your option : ");
-	    }
+	
 	public static void main(String[] args) throws IOException {
 		Scanner scanner = new Scanner(System.in);
 		int option = 1;
@@ -73,7 +68,8 @@ public class Library {
 		System.out.println("Search...........3");
 		System.out.println("Exit.............0");
 		System.out.format("------------------------%n");
-
+		//System.out.format("------------------------%n");
+		System.out.println("Enter choice:>");
 	}
 
 	private void searchOption() {
