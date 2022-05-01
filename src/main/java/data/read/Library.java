@@ -7,22 +7,116 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Scanner;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class Library {
 	SortedMap<Integer, BookerPrize> bookerPrizeMap = new TreeMap<>();
-
+	 public static void printMenu(String[] options){
+	        for (String option : options){
+	            System.out.println(option);
+	        }
+	        System.out.print("Choose your option : ");
+	    }
 	public static void main(String[] args) throws IOException {
+		Scanner scanner = new Scanner(System.in);
+		int option = 1;
 		Library l = new Library();
 		SortedMap<Integer, BookerPrize> loadData = l.loadData();
-		// l.bookerPrizeWinner();
-		l.selectOption(2010);
+		while (option != 0) {
+			l.getMenu();
+			try {
+				
+				option = scanner.nextInt();
+				//int ch=scanner.nextInt();
+				switch (option) {
+				case 1:
+					l.bookerPrizeWinnerList();
+					break;
+				case 2:
+					l.selectOption();
+					break;
+				case 3:
+					l.searchOption();
+					break;
+
+				default:
+					break;
+				}
+			} catch (InputMismatchException ex) {
+				System.out.println("Please enter an integer value between 0 and 3" );
+                scanner.next();
+				
+			} catch (Exception ex) {
+				System.out.println("An unexpected error happened. Please try again");
+				scanner.next();
+			}
+		}
+
+		
+		
 	}
 
-	private void selectOption(Integer key) {
+	public void getMenu() {
+		System.out.format("------------------------%n");
+		System.out.println("Booker prize menu");
+		System.out.format("------------------------%n");
+
+		System.out.println("List.............1");
+		System.out.println("Select...........2");
+		System.out.println("Search...........3");
+		System.out.println("Exit.............0");
+		System.out.format("------------------------%n");
+
+	}
+
+	private void searchOption() {
+		System.out.println("Enter book title or partial book title > ");
+		Scanner sc=new Scanner(System.in);
+		String s=sc.next();
+		
+		List<Entry<Integer, BookerPrize>> collect = bookerPrizeMap.entrySet().stream()
+				.filter(item -> item.getValue().getWinner().getTitle().toLowerCase().contains(s))
+				.collect(Collectors.toList());
+		String leftAlignFormat = "| %-19s | %-30s | %-19s | %-5s | %n";
+		if (!collect.isEmpty()) {
+			Integer year = collect.get(0).getKey();
+			System.out
+					.format("--------------------------------------------------------------------------------------%n");
+			System.out
+					.format("| Title               | Author                         | Status              | Year  |%n");
+			System.out
+					.format("--------------------------------------------------------------------------------------%n");
+			System.out.format(leftAlignFormat, collect.get(0).getValue().getWinner().getTitle(),
+					collect.get(0).getValue().getWinner().getAuthor(), "Winner", year);
+			System.out
+					.format("--------------------------------------------------------------------------------------%n");
+		}
+		for (Entry<Integer, BookerPrize> key : bookerPrizeMap.entrySet()) {
+			for (Book entry : key.getValue().getShorList()) {
+				if (entry.getTitle().toLowerCase().contains("pi")) {
+					System.out.format(leftAlignFormat, entry.getTitle(), entry.getAuthor(), "Shortlisted",
+							key.getKey());
+					System.out.format(
+							"--------------------------------------------------------------------------------------%n");
+				}
+
+			}
+
+		}
+		System.out.println();
+	}
+
+	private void selectOption() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter Year>");
+		Integer key = sc.nextInt();
 		System.out.format(
 				"----------------------------------------------------------------------------------------------------------------------------------------%n");
 		System.out.format(
@@ -39,10 +133,7 @@ public class Library {
 
 		String leftAlignFormat1 = "| %-19s |  %-43s | %-22s | %-16s | %-19s | %n";
 		String chairPerson = bookerPrizeMap.get(key).getChairPersion();
-		int rem = bookerPrizeMap.get(key).getShorList().size() % 2;
-		if (rem != 0) {
 
-		}
 		AtomicInteger count = new AtomicInteger(0);
 		int booksize = bookerPrizeMap.get(key).getShorList().size() / 2;
 		// int panelSize = bookerPrizeMap.get(key).getShorList().size() -
@@ -69,7 +160,7 @@ public class Library {
 
 	}
 
-	public void bookerPrizeWinner() {
+	public void bookerPrizeWinnerList() {
 		System.out.format(
 				"----------------------------------------------------------------------------------------------%n");
 		System.out.format(
